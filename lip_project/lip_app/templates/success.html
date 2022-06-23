@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1> hello {{ loginUser.First_Name}} {{ loginUser.Last_Name}} </h1>
+            </div>
+            <div class="col">
+                <a href="/logout">Log Out</a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div>
+
+        <div class="container  mt-5">
+            <div class="row">
+                <div class="col">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <h1>Add book</h1>
+                <form action="/addbook" method="post">
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">title</label>
+                        <input type="text" name="title" class="form-control" id="exampleInputEmail1"
+                            aria-describedby="emailHelp">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">discription</label>
+                        <input type="text" name="desc" class="form-control" id="exampleInputEmail1"
+                            aria-describedby="emailHelp">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">add</button>
+                </form>
+            </div>
+        </div>
+            <div class="col ">
+                <div >
+                    <h1 >All Books</h1>
+                    {% for book in books %}
+                    <div >
+                        <a href="books/{{book.id}}">{{book.title}}</a>
+                        <p>Added By {{book.user.First_Name}} {{book.user.Last_Name}}</p>
+
+
+                        {% if user in book.users_like.all %}
+                        <p>this is one of your favorites</p>
+                        {% else %}
+                        <a href="/likebook/{{book.id}}">Add to Favorites</a>
+
+                        {% endif %}
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>
